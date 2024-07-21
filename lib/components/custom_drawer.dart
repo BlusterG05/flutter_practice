@@ -9,7 +9,7 @@ class CustomDrawer extends StatelessWidget {
         children: <Widget>[
           const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 34, 34, 34),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -29,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
                 ],
               )),
           ListTile(
-              leading: const Icon(Icons.home, color: Colors.blue),
+              leading: const Icon(Icons.home, color: Color.fromARGB(255, 43, 43, 44)),
               title: const Text('INICIO',
                   style: TextStyle(
                       color: Colors.black,
@@ -41,12 +41,12 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
               leading: const Icon(
                 Icons.person,
-                color: Colors.blue,
+                color: Color.fromARGB(255, 43, 43, 44),
               ),
               title: const Text(
                 'CLIENTES',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 43, 43, 44),
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -57,7 +57,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(
               Icons.settings,
-              color: Colors.blue,
+              color: Color.fromARGB(255, 43, 43, 44),
             ),
             title: const Text(
               'ORDEN DE TRABAJO',
@@ -74,7 +74,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
               leading: const Icon(
                 Icons.book_online,
-                color: Colors.blue,
+                color: Color.fromARGB(255, 43, 43, 44),
               ),
               title: const Text(
                 'ENCUESTAS',
@@ -90,7 +90,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
               leading: const Icon(
                 Icons.close,
-                color: Colors.blue,
+                color: Color.fromARGB(255, 43, 43, 44),
               ),
               title: const Text(
                 'CERRAR SESIÓN',
