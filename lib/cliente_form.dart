@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'database_cuarto.dart';
 
 class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
@@ -13,6 +15,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String? _sexo;
   String? _estadocivil;
+
+  late DatabaseCuarto _databaseCuarto;
+  @override
+  void initState() {
+    super.initState();
+    _databaseCuarto = DatabaseCuarto();
+  }
+
+  void _addClient() async {
+    if (_formKey.currentState!.validate()) {
+      Map<String, dynamic> client = {
+        'apellido': _apellidoController.text,
+        'nombre': _nombreController.text,
+        'correo': _correoController.text,
+        'telefono': _telefonoController.text
+      };
+      await _databaseCuarto.insertCliente(client);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,13 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Formulario Validado")),
-                      );
-                    }
-                  },
+                  onPressed: _addClient,
                   child: Text("Enviar"),
                 )
               ],
