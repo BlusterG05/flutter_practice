@@ -4,6 +4,9 @@ import 'menu_form.dart';
 import 'encuesta_form.dart';
 import 'cliente_form.dart';
 import 'orden_form.dart';
+import 'mapa.dart';
+import 'productos.dart';
+import 'datos_empresa.dart';
 
 void main() {
   runApp(const MainApp());
@@ -25,7 +28,10 @@ class MainApp extends StatelessWidget {
           'cliente_form': (context) => MyHomePage(),
           'menu_form': (context) => MenuForm(),
           'encuesta_form': (context) => EncuestaForm(),
-          'purchase_order_form': (context) => PurchaseOrderForm()
+          'purchase_order_form': (context) => const PurchaseOrderForm(),
+          'mapa': (context) => MapaScreen(),
+          'datos_empresa_form': (context) => DatosEmpresaForm(),
+          'productos_form': (context) => ProductosForm(),
 
         });
   }
