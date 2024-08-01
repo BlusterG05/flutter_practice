@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'components/custom_drawer.dart';
+import 'components/custom_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EncuestaForm extends StatefulWidget {
@@ -15,114 +17,111 @@ class _EncuestaFormState extends State<EncuestaForm> {
 
   String? _validateDropdown(String? value) {
     if (value == null || value.isEmpty) {
-      return "Seleccione una opción";
+      return 'Por favor selecciona una opción';
     }
     return null;
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isSubmitted = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              Navigator.pushNamed(context, 'menu_form');
-            },
-          ),
-          IconButton(
-            onPressed: () => {},
-            icon: const Icon(Icons.more_vert, color: Colors.black),
-          ),
-        ],
-        title: Text(
-          'Formulario Clientes'.toUpperCase(),
-          style: GoogleFonts.dmSerifDisplay(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(title: 'Encuesta'),
+      drawer: CustomDrawer(),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(50),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              const SizedBox(height: 20),
-              // PREGUNTA 1
+              Text(
+                'PREGUNTA 1: ¿Cómo calificaría el servicio recibido?',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               TextFormField(
                 controller: _pregunta1Controller,
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black12),
-                      borderRadius: BorderRadius.circular(20)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: Color.fromARGB(242, 34, 34, 34)),
-                      borderRadius: BorderRadius.circular(20)),
-                  hintText: "Pregunta 1".toUpperCase(),
-                  prefixIcon: const Icon(Icons.email),
-                  prefixIconColor: const Color.fromARGB(242, 34, 34, 34),
+                  hintText: 'Escribe tu respuesta aquí...',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Ingrese un pregunta Válida";
+                    return 'Por favor, responde la pregunta';
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
-              // PREGUNTA 2
+              SizedBox(height: 20),
+              Text(
+                'PREGUNTA 2: ¿Recomendarías nuestro servicio?',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               TextFormField(
                 controller: _pregunta2Controller,
-                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black12),
-                      borderRadius: BorderRadius.circular(20)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: Color.fromARGB(242, 34, 34, 34)),
-                      borderRadius: BorderRadius.circular(20)),
-                  hintText: "Pregunta 2".toUpperCase(),
-                  prefixIcon: const Icon(Icons.phone),
-                  prefixIconColor: const Color.fromARGB(242, 34, 34, 34),
+                  hintText: 'Escribe tu respuesta aquí...',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Ingrese un pregunta Válida";
+                    return 'Por favor, responde la pregunta';
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
+              SizedBox(height: 20),
+              Text(
+                'Sexo:',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              RadioListTile<String>(
+                title: const Text('Masculino'),
+                value: 'Masculino',
+                groupValue: _sexo,
+                onChanged: (String? value) {
                   setState(() {
-                    _isSubmitted = true;
+                    _sexo = value;
                   });
-                  if (_formKey.currentState!.validate() && _sexo != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text("ENCUESTA ENVIADA EXITOSAMENTE")),
-                    );
-                  }
                 },
-                child: const Text("ENVIAR"),
               ),
-              const SizedBox(height: 5),
-              // BOTÓN VOLVER
+              RadioListTile<String>(
+                title: const Text('Femenino'),
+                value: 'Femenino',
+                groupValue: _sexo,
+                onChanged: (String? value) {
+                  setState(() {
+                    _sexo = value;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'menu_form');
-                },
-                child: const Text("VOLVER"),
+                onPressed: _submitForm,
+                child: Text('Enviar'),
               ),
+              if (_isSubmitted)
+                Text(
+                  'Gracias por completar la encuesta!',
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
             ],
           ),
         ),

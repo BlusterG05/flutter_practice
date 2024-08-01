@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'components/custom_app_bar.dart';
+import 'components/custom_drawer.dart';
 import 'database_cuarto.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -38,19 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            "Formulario Cliente",
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Color.fromARGB(255, 44, 46, 51),
-          leading: Icon(Icons.menu),
-          actions: [
-            IconButton(onPressed: () => {}, icon: Icon(Icons.search)),
-            IconButton(onPressed: () => {}, icon: Icon(Icons.more_vert)),
-          ],
-        ),
+        appBar: CustomAppBar(title: 'Formulario clientes'),
+        drawer: CustomDrawer(),
         body: Padding(
           padding: const EdgeInsets.all(50),
           child: Form(
