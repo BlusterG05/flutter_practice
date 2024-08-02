@@ -8,113 +8,76 @@ class DatosEmpresaForm extends StatefulWidget {
 }
 
 class _DatosEmpresaFormState extends State<DatosEmpresaForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _nombreEmpresaController = TextEditingController();
-  final _rucController = TextEditingController();
-  final _direccionController = TextEditingController();
-  final _telefonoController = TextEditingController();
-  final _emailController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Datos de la Empresa'),
       drawer: CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(50),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _nombreEmpresaController,
-                decoration: InputDecoration(
-                  labelText: "Nombre de la Empresa",
-                  prefixIcon: Icon(Icons.business),
+      body: Center(
+        child: Card(
+          elevation: 5,
+          margin: EdgeInsets.all(16),
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage('https://www.zarla.com/images/zarla-compu-space-1x1-2400x2400-20210603-9x3dmk6pq9jgdpm8rwh4.png'), // Reemplaza con tu URL de imagen
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Por favor ingrese el nombre de la empresa";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _rucController,
-                decoration: InputDecoration(
-                  labelText: "RUC",
-                  prefixIcon: Icon(Icons.numbers),
+                SizedBox(height: 20),
+                Text(
+                  'Zenith Code',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Por favor ingrese el RUC";
-                  }
-                  if (value.length != 13) {
-                    return "El RUC debe tener 13 dígitos";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _direccionController,
-                decoration: InputDecoration(
-                  labelText: "Dirección",
-                  prefixIcon: Icon(Icons.location_on),
+                SizedBox(height: 10),
+                Text(
+                  'Empresa de Desarrollo de Software',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Por favor ingrese la dirección";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _telefonoController,
-                decoration: InputDecoration(
-                  labelText: "Teléfono",
-                  prefixIcon: Icon(Icons.phone),
+                SizedBox(height: 20),
+                _buildInfoRow(Icons.location_on, 'Av. Chone Magisterio de la chone'),
+                _buildInfoRow(Icons.phone, '+593 979923164'),
+                _buildInfoRow(Icons.email, 'info@zenithcode.com'),
+                _buildInfoRow(Icons.language, 'www.zenithcode.com'),
+                SizedBox(height: 20),
+                Text(
+                  'Innovación en cada línea de código',
+                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Por favor ingrese el teléfono";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Por favor ingrese el email";
-                  }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                    return "Por favor ingrese un email válido";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Aquí iría la lógica para guardar los datos
-                    // Por ahora, solo navegaremos al formulario de productos
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Aquí puedes agregar la lógica para navegar a la siguiente pantalla
                     Navigator.pushNamed(context, 'productos_form');
-                  }
-                },
-                child: Text("Guardar y Continuar"),
-              )
-            ],
+                  },
+                  child: Text("Continuar"),
+                )
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.blue),
+          SizedBox(width: 10),
+          Text(text),
+        ],
       ),
     );
   }
