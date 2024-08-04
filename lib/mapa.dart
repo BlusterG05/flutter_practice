@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'components/custom_app_bar.dart';
 import 'components/custom_drawer.dart';
-import 'dart:html' as html;
+//import 'dart:html' as html;
 
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);

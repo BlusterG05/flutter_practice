@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'components/custom_app_bar.dart';
 import 'components/custom_drawer.dart';
+import 'database_cuarto.dart';
 
 class ProductosForm extends StatefulWidget {
   @override
@@ -13,6 +14,41 @@ class _ProductosFormState extends State<ProductosForm> {
   final _descripcionController = TextEditingController();
   final _precioController = TextEditingController();
   String? _categoria;
+
+  late DatabaseCuarto _databaseCuarto;
+
+  @override
+  void initState() {
+    super.initState();
+    _databaseCuarto = DatabaseCuarto();
+  }
+
+  void _addProducto() async {
+    if (_formKey.currentState!.validate()) {
+      Map<String, dynamic> producto = {
+        'nombre': _nombreProductoController.text,
+        'descripcion': _descripcionController.text,
+        'precio': double.parse(_precioController.text),
+        'categoria': _categoria,
+      };
+      int id = await _databaseCuarto.insertProducto(producto);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Producto registrado exitosamente con ID: $id'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      // Limpiar los campos del formulario
+      _nombreProductoController.clear();
+      _descripcionController.clear();
+      _precioController.clear();
+      setState(() {
+        _categoria = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,22 +137,15 @@ class _ProductosFormState extends State<ProductosForm> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Aquí iría la lógica para guardar los productos
-                    // Por ahora, solo navegaremos al formulario de login
-                    Navigator.pushNamed(context, 'login_form');
-                  }
-                },
-                child: Text("Guardar y Continuar"),
+                onPressed: _addProducto,
+                child: Text("Guardar Producto"),
               ),
               SizedBox(height: 10),
               TextButton(
                 onPressed: () {
-                  // Navegar directamente al login sin guardar productos
-                  Navigator.pushNamed(context, 'login_form');
+                  Navigator.pushNamed(context, 'menu_form');
                 },
-                child: Text("Omitir"),
+                child: Text("Volver al Menú"),
               )
             ],
           ),

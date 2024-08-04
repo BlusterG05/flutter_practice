@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'components/custom_app_bar.dart';
 import 'components/custom_drawer.dart';
-import 'login_form.dart';  // Asegúrate de que esta importación sea correcta
+import 'login_form.dart';
 
 class MenuForm extends StatelessWidget {
   @override
@@ -9,63 +9,76 @@ class MenuForm extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: 'Menu de Opciones'),
       drawer: CustomDrawer(),
-      body: GridView.count(
-        crossAxisCount: 2,
+      body: ListView(
         padding: EdgeInsets.all(16.0),
-        childAspectRatio: 1.0,
-        mainAxisSpacing: 16.0,
-        crossAxisSpacing: 16.0,
         children: <Widget>[
-          _buildMenuOption(context, 'Datos Empresa', Icons.business, 'datos_empresa_form'),
-          _buildMenuOption(context, 'Productos', Icons.inventory, 'productos_form'),
-          _buildMenuOption(context, 'Clientes', Icons.person, 'cliente_form'),
-          _buildMenuOption(context, 'Encuestas', Icons.poll, 'encuesta_form'),
-          _buildMenuOption(context, 'Orden de Trabajo', Icons.work, 'purchase_order_form'),
-          _buildMenuOption(context, 'Mapa', Icons.map, 'mapa'),
-          _buildMenuOption(context, 'Cerrar Sesión', Icons.logout, 'logout', isLogout: true),
+          _buildMenuCard(context, 'Datos Empresa', Icons.business, 'datos_empresa_form'),
+          _buildExpandableMenuCard(context, 'Productos', Icons.inventory, [
+            {'title': 'Crear Producto', 'route': 'productos_form'},
+            {'title': 'Ver Productos', 'route': 'ver_productos_form'},
+          ]),
+          _buildExpandableMenuCard(context, 'Clientes', Icons.person, [
+            {'title': 'Crear Cliente', 'route': 'cliente_form'},
+            {'title': 'Ver Clientes', 'route': 'ver_clientes_form'},
+          ]),
+          _buildMenuCard(context, 'Encuestas', Icons.poll, 'encuesta_form'),
+          _buildExpandableMenuCard(context, 'Orden de Trabajo', Icons.work, [
+            {'title': 'Crear Orden', 'route': 'purchase_order_form'},
+            {'title': 'Ver Órdenes', 'route': 'ver_ordenes_form'},
+          ]),
+          _buildMenuCard(context, 'Mapa', Icons.map, 'mapa'),
+          _buildMenuCard(context, 'Cerrar Sesión', Icons.logout, 'logout', isLogout: true),
         ],
       ),
     );
   }
 
-  Widget _buildMenuOption(BuildContext context, String title, IconData icon, String route, {bool isLogout = false}) {
-    return InkWell(
-      onTap: () {
-        if (isLogout) {
-          // Lógica para cerrar sesión
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => LoginForm()),
-            (Route<dynamic> route) => false
-          );
-        } else {
-          Navigator.pushNamed(context, route);
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 65, 67, 71),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 50,
-              color: Colors.white,
-            ),
-            SizedBox(height: 10),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+  Widget _buildMenuCard(BuildContext context, String title, IconData icon, String route, {bool isLogout = false}) {
+    return Card(
+      elevation: 4,
+      margin: EdgeInsets.symmetric(vertical: 8),
+      child: InkWell(
+        onTap: () {
+          if (isLogout) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => LoginForm()),
+              (Route<dynamic> route) => false
+            );
+          } else {
+            Navigator.pushNamed(context, route);
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(icon, size: 30, color: Theme.of(context).primaryColor),
+              SizedBox(width: 16),
+              Text(
+                title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildExpandableMenuCard(BuildContext context, String title, IconData icon, List<Map<String, String>> options) {
+    return Card(
+      elevation: 4,
+      margin: EdgeInsets.symmetric(vertical: 8),
+      child: ExpansionTile(
+        leading: Icon(icon, color: Theme.of(context).primaryColor),
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        children: options.map((option) => ListTile(
+          title: Text(option['title']!),
+          onTap: () => Navigator.pushNamed(context, option['route']!),
+        )).toList(),
       ),
     );
   }
